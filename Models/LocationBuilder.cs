@@ -2,9 +2,9 @@ namespace WarehouseApp2.Models;
 
 public class LocationBuilder
 {
-    private uint Counter = 0;
-    public string Zone { get; set; } = Attributes.BN1;
+    private long Counter = 0;
     public string PutawayType { get; set; } = Attributes.Bin;
+    public string Zone { get; set; } = Attributes.BN1;
 
     public List<PickLocation> MyPickLocations { get; set; } = new();
 
@@ -24,17 +24,30 @@ public class LocationBuilder
                     var bay = b.ToString().PadLeft(3, '0');
                     var position = p.ToString().PadLeft(2, '0');
 
+                    var notes = new List<Note> {
+                        new Note {
+                            Content = "Using this location for holiday skus",
+                            User = "Meryl",
+                        },
+                        new Note {
+                            Content = "Needs a new bin",
+                            User = "John",
+                        },
+                    };
+
                     MyPickLocations.Add(new PickLocation {
-                        Name = $"{Zone}-A01-{bay}-{s}{position}",
-                             PutawayType = PutawayType,
-                             Barcode = Counter.ToString().PadLeft(6, '0'),
-                             Width = 12,
-                             Length = 24,
-                             Height = 14,
-                             MaxWeight = 500,
-                             Ranking = 50,
-                             Zone = Zone
-                    });
+                            Id = Counter,
+                            Barcode = Counter.ToString().PadLeft(6, '0'),
+                            MaxWeight = 500,
+                            Name = $"{Zone}-A01-{bay}-{s}{position}",
+                            Notes = notes,
+                            PutawayType = PutawayType,
+                            Width = 12,
+                            Length = 24,
+                            Height = 14,
+                            Ranking = 50,
+                            Zone = Zone
+                            });
                     
                     Counter++;
                 }

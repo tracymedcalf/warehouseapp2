@@ -1,0 +1,45 @@
+@using WarehouseApp2.Models;
+
+<MudCard>
+    <MudCard>
+        <MudTextField 
+            @bind-Value="@NewNote" 
+            Label="Add Note" 
+            Variant="Variant.Outlined" 
+        />
+        <MudButton 
+            @onclick="Save" 
+            Variant="Variant.Filled" 
+            Color="Color.Primary"
+            >
+            Submit Note
+        </MudButton>
+    </MudCard>
+    @foreach (var n in Notes) {
+        <MudCard Class="mt-4">
+            <MudCardContent>
+                <MudText Typo="Typo.body2">@n.Content</MudText>
+                <div Class="d-flex justify-space-between flex-grow-1 gap-4">
+                    <MudText Typo="Typo.body2">@n.User</MudText>
+                    <MudText Typo="Typo.body2">@n.Date</MudText>
+                </div>
+            </MudCardContent>
+        </MudCard>
+    }
+</MudCard>
+
+@code {
+    [Parameter]
+    public List<Note> Notes { get; set; }
+
+    private string NewNote { get; set; }
+
+    public void Save() {
+        Notes.Add(new Note {
+            Content = NewNote,
+            User = "Guest"
+        });
+
+        NewNote = string.Empty;
+    }
+}

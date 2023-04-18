@@ -7,5 +7,5 @@ public class PickLocation : Location
 
     public Assignment? Assignment { get; set; }
 
-    public List<string> Notes { get; set; } = new List<string>();
+    public List<Note> Notes { get; set; } = new();
 }

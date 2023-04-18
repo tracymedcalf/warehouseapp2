@@ -18,7 +18,9 @@
         <MudTh>SKU</MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="location">
+            <MudLink Href=@($"locations/{context.Id}")>@context.Name</MudLink>
+        </MudTd>
         <MudTd DataLabel="SKU">@context.Assignment?.Sku.Name</MudTd>
     </RowTemplate>
     <PagerContent>

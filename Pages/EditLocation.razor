@@ -1,0 +1,33 @@
+@using WarehouseApp2.Models;
+@using WarehouseApp2.Components;
+@page "/locations/{id:int}"
+@inject UIStateContainer myStateContainer
+@if (Location is null) {
+    <p>Location not found.</p>
+    return;
+}
+<MudTextField @bind-Value="@Location.Name" Label="Name" />
+<MudTextField @bind-Value="@Location.Width" Label="Width" />
+<MudTextField @bind-Value="@Location.Length" Label="Length" />
+<MudTextField @bind-Value="@Location.Height" Label="Height" />
+<MudTextField @bind-Value="@Location.MaxWeight" Label="Max Weight" />
+<MudTextField @bind-Value="@Location.Barcode" Label="Barcode" />
+<MudSelect @bind-Value="@Location.PutawayType" T="string" Label="Putaway Type" AnchorOrigin="Origin.BottomCenter">
+    @foreach (var m in Attributes.PutawayTypes) {
+        <MudSelectItem Value="@(m)" />
+    }
+</MudSelect>
+
+<Comments Notes=@Location.Notes />
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    private PickLocation? Location;
+    
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Location = myStateContainer.MyPickLocations.Find(p => p.Id == Id);
+    }
+}

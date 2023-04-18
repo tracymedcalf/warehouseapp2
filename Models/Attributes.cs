@@ -44,7 +44,7 @@ public static class Attributes {
 
     public static List<string> Zones = new List<string> {
         BN1,
-            "CF1",
+            CF1,
             "PF1",
             "SR1",
     };
