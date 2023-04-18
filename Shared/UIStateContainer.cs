@@ -9,13 +9,15 @@ public class UIStateContainer
         Console.WriteLine("UIStateContainer being instantiated...");
 
         var builder = new LocationBuilder();
-
-        MyPickLocations.AddRange(builder.NewList(500));
         
+        builder.CreateRange(1, 1, 1, 10, 4, 20);
+
         builder.Zone = Attributes.CF1;
         builder.PutawayType = Attributes.CartonFlow;
 
-        MyPickLocations.AddRange(builder.NewList(500));
+        builder.CreateRange(1, 1, 1, 10, 4, 20);
+
+        MyPickLocations = builder.MyPickLocations;
     }
 
     public void SetValue(PickLocation p)
