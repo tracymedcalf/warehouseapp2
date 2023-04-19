@@ -6,7 +6,6 @@ public class Assignment
     public uint OverrideMin { get; set; }
     public uint OverrideMax { get; set; }
 
-    public long SkuId { get; set; }
     public Sku Sku { get; set; } = null!;
 
     public PickLocation PickLocation { get; set; } = null!;

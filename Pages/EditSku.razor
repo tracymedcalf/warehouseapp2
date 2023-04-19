@@ -1,0 +1,28 @@
+@using WarehouseApp2.Models;
+@using WarehouseApp2.Components;
+@page "/skus/{id:int}"
+@inject UIStateContainer myStateContainer
+
+@if (Sku is null) {
+    <p>Sku not found.</p>
+    return;
+}
+<MudField Label="SKU">@Sku.Name</MudField>
+<MudField Label="Description">@Sku.Description</MudField>
+<MudTextField @bind-Value="@Sku.Width" Label="Width" />
+<MudTextField @bind-Value="@Sku.Length" Label="Length" />
+<MudTextField @bind-Value="@Sku.Height" Label="Height" />
+
+<Comments Notes=@Sku.Notes />
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    private Sku? Sku;
+    
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Sku = myStateContainer.Skus.Find(p => p.Id == Id);
+    }
+}

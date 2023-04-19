@@ -1,27 +1,29 @@
 ﻿@using WarehouseApp2.Models;
 
-@page "/locations"
+@page "/skus"
 
 @inject UIStateContainer myStateContainer
 
-<PageTitle>Locations</PageTitle>
+<PageTitle>SKUs</PageTitle>
 
-<MudText Typo="Typo.h3" GutterBottom="true">Locations</MudText>
-<MudTable Items="@MyLocations" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<PickLocation,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem1">
+<MudText Typo="Typo.h3" GutterBottom="true">Skus</MudText>
+<MudTable Items="@MySkus" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<Sku,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem1">
     <ToolBarContent>
-        <MudText Typo="Typo.h6">Pick Locations</MudText>
+        <MudText Typo="Typo.h6">SKUs</MudText>
         <MudSpacer />
         <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
     </ToolBarContent>
     <HeaderContent>
-        <MudTh>Name</MudTh>
         <MudTh>SKU</MudTh>
+        <MudTh>Has Location?</MudTh>
+        <MudTh>Description</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="location">
-            <MudLink Href=@($"locations/{context.Id}")>@context.Name</MudLink>
+            <MudLink Href=@($"skus/{context.Id}")>@context.Name</MudLink>
         </MudTd>
-        <MudTd DataLabel="SKU">@context.Assignment?.Sku.Name</MudTd>
+        <MudTd DataLabel="Has Location?">@(context.Assignments.Count() == 0 ? "YES" : "NO")</MudTd>
+        <MudTd DataLabel="Description">@context.Description</MudTd>
     </RowTemplate>
     <PagerContent>
         <MudTablePager />
@@ -45,18 +47,18 @@
     private bool striped = false;
     private bool bordered = false;
     private string searchString1 = "";
-    private PickLocation? selectedItem1 = null;
-    private HashSet<PickLocation> selectedItems = new HashSet<PickLocation>();
+    private Sku? selectedItem1 = null;
+    private HashSet<Sku> selectedItems = new HashSet<Sku>();
 
-    private List<PickLocation> MyLocations = null!;
+    private List<Sku> MySkus = null!;
 
-    private bool FilterFunc1(PickLocation element) => FilterFunc(element, searchString1);
+    private bool FilterFunc1(Sku element) => FilterFunc(element, searchString1);
 
-    private bool FilterFunc(PickLocation element, string searchString)
+    private bool FilterFunc(Sku element, string searchString)
     {
         if (string.IsNullOrWhiteSpace(searchString))
             return true;
-        if (element.Assignment is not null && element.Assignment.Sku.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+        if (element.Assignments.Count() == 0)// && element.Assignment.Sku.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
         if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
@@ -66,6 +68,6 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        MyLocations = myStateContainer.MyPickLocations;
+        MySkus = myStateContainer.Skus;
     }
 }
