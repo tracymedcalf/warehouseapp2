@@ -12,6 +12,9 @@
 <MudTextField @bind-Value="@Sku.Width" Label="Width" />
 <MudTextField @bind-Value="@Sku.Length" Label="Length" />
 <MudTextField @bind-Value="@Sku.Height" Label="Height" />
+<MudTooltip Text="Average number of picking scans per day">
+<MudField Label="Hits">@Sku.Hits</MudField>
+</MudTooltip>
 
 <Comments Notes=@Sku.Notes />
 

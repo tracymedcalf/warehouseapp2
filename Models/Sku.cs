@@ -3,13 +3,14 @@ namespace WarehouseApp2.Models;
 public class Sku
 {
     public long Id { get; set; }
-    public List<Assignment> Assignments = new();
     public string Name { get; set; } = null!;
-    public string Description { get; set; } = null!;
+    public List<Assignment> Assignments = new();
     public string CutCode { get; set; } = CutCodes.None;
+    public string Description { get; set; } = null!;
+    public double Hits { get; set; } = 0;
+    public string MaxType { get; set; } = null!;
     public uint Min { get; set; }
     public uint Max { get; set; }
-    public string MaxType { get; set; } = null!;
     public uint Ti { get; set; }
     public uint Hi { get; set; }
     public double Width { get; set; }

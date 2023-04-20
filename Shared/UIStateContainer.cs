@@ -2,6 +2,7 @@ using WarehouseApp2.Models;
 
 public class UIStateContainer
 {
+    private RuleManager RuleManager;
     public List<PickLocation> MyPickLocations;
     public List<Sku> Skus;
 
@@ -78,9 +79,13 @@ public class UIStateContainer
 
     public UIStateContainer() {
         Console.WriteLine("UIStateContainer being instantiated...");
+        
+        RuleManager = new RuleManager();
 
         BuildLocations();
         BuildSkus();
+
+        RuleManager.AssignSku(Skus[0], MyPickLocations);
     }
 
     public void SetValue(PickLocation p)

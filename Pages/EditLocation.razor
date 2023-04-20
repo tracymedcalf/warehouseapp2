@@ -12,6 +12,11 @@
 <MudTextField @bind-Value="@Location.Height" Label="Height" />
 <MudTextField @bind-Value="@Location.MaxWeight" Label="Max Weight" />
 <MudTextField @bind-Value="@Location.Barcode" Label="Barcode" />
+<MudSelect @bind-Value="@Location.PutawayType" Label="Putaway Type" T="string">
+    @foreach (var p in PutawayTypes.PutawayTypesList) {
+        <MudSelectItem Value="@p" />
+    }
+</MudSelect>
 
 <Comments Notes=@Location.Notes />
 
