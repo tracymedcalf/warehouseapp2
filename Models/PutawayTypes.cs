@@ -3,7 +3,6 @@ using System.Reflection;
 public static class PutawayTypes
 {
     public static string Bin = "Bin";
-    public static string BinEndcap = "Bin Endcap";
     public static string BinOblong = "Bin Oblong";
     public static string BinShelf = "Bin Shelf";
     public static string Bulk = "Bulk";

@@ -22,7 +22,7 @@
         <MudTd DataLabel="location">
             <MudLink Href=@($"skus/{context.Id}")>@context.Name</MudLink>
         </MudTd>
-        <MudTd DataLabel="Has Location?">@(context.Assignments.Count() == 0 ? "YES" : "NO")</MudTd>
+        <MudTd DataLabel="Has Location?">@(context.Assignments.Count() == 0 ? "NO" : "YES")</MudTd>
         <MudTd DataLabel="Description">@context.Description</MudTd>
     </RowTemplate>
     <PagerContent>

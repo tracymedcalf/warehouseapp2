@@ -10,6 +10,6 @@ public class Location
     public uint Length { get; set; }
     public uint Height { get; set; }
     public uint MaxWeight { get; set; }
-    public long Ranking { get; set; }
+    public long Ranking { get; set; } = 5000;
     public string Zone { get; set; } = null!;
 }

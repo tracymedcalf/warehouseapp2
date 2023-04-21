@@ -14,9 +14,13 @@ public static class Attributes {
     public static string Special = "Special";
 
     public static List<string> Zones = new List<string> {
-        BN1,
+        "BK1",
+        "BK2",
+            BN1,
             CF1,
             "PF1",
             "SR1",
+            "SR2",
+            "SR3",
     };
 }

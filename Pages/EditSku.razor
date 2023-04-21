@@ -9,12 +9,22 @@
 }
 <MudField Label="SKU">@Sku.Name</MudField>
 <MudField Label="Description">@Sku.Description</MudField>
-<MudTextField @bind-Value="@Sku.Width" Label="Width" />
-<MudTextField @bind-Value="@Sku.Length" Label="Length" />
-<MudTextField @bind-Value="@Sku.Height" Label="Height" />
+<MudTextField @bind-Value="@Sku.Width (feet)" Label="Width" />
+<MudTextField @bind-Value="@Sku.Length (feet)" Label="Length" />
+<MudTextField @bind-Value="@Sku.Height (feet)" Label="Height" />
+<MudTextField @bind-Value="@Sku.Weight" Label="Weight (lbs)" />
 <MudTooltip Text="Average number of picking scans per day">
-<MudField Label="Hits">@Sku.Hits</MudField>
+    <MudField Label="Hits">@Sku.Hits</MudField>
 </MudTooltip>
+
+<MudList>
+    @foreach (var barcode in Sku.Barcodes)
+    {
+        <MudListItem>
+            <MudTextField @bind-Value="@barcode.Code" />
+        </MudListItem>
+    }
+</MudList>
 
 <Comments Notes=@Sku.Notes />
 
@@ -22,7 +32,7 @@
     [Parameter]
     public int Id { get; set; }
     private Sku? Sku;
-    
+
     protected override void OnInitialized()
     {
         base.OnInitialized();

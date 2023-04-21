@@ -18,4 +18,5 @@ public class Sku
     public double Height { get; set; }
     public double Weight { get; set; }
     public List<Note> Notes { get; set; } = new();
+    public List<Barcode> Barcodes { get; set; } = new();
 }

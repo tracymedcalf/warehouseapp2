@@ -1,3 +1,35 @@
 @page "/manager"
 
-<h1>manager</h1>
+@using WarehouseApp2.Models;
+
+<PageTitle>Warehouse Manager</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Warehouse Manager</MudText>
+
+<MudGrid>
+    <MudItem xs="1">
+        <MudTextField @bind-Value="@HoldingPower" />
+    </MudItem>
+    <MudItem xs="11">
+        <MudSlider @bind-Value="@HoldingPower">Desired holding power (days between replens)</MudSlider>
+    </MudItem>
+</MudGrid>
+
+<div Class="mt-10">
+    <MudText Typo="Typo.h6">Warehouse Utilization</MudText>
+    <MudChart ChartType="ChartType.Bar" ChartSeries="@Series" XAxisLabels="@XAxisLabels" Width="100%" Height="350px" />
+</div>
+
+
+@code {
+    private long HoldingPower { get; set; } = 15;
+    private List<ChartSeries> Series = new List<ChartSeries>() {
+        new ChartSeries() { Name = "Total Volume", Data = new double[] { 29, 24, 35, 14, 28, 26, 28, 20, 31 } },
+        new ChartSeries() { Name = "Used Volume", Data = new double[] { 14, 6, 11, 13, 4, 16, 10, 16, 18 } },
+        new ChartSeries() { Name = "Total Locations", Data = new double[] { 24, 11, 15, 16, 7, 21, 15, 18, 25 } },
+        new ChartSeries() { Name = "Used Locations", Data = new double[] { 16, 6, 11, 13, 4, 16, 10, 16, 18 } },
+    };
+
+    public string[] XAxisLabels = Attributes.Zones.ToArray();
+
+}
