@@ -11,6 +11,7 @@ public class Sku
     public string MaxType { get; set; } = null!;
     public uint Min { get; set; }
     public uint Max { get; set; }
+    public string PutawayType { get; set; } = null!;
     public uint Ti { get; set; }
     public uint Hi { get; set; }
     public double Width { get; set; }

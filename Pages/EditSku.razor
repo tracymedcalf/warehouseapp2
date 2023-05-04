@@ -36,6 +36,6 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        Sku = myStateContainer.Skus.Find(p => p.Id == Id);
+        Sku = myStateContainer.Skus.Find(s => s.Id == Id);
     }
 }

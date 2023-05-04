@@ -68,6 +68,6 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        MySkus = myStateContainer.Skus;
+        MySkus = myStateContainer.Skus.ToList();
     }
 }

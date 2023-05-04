@@ -2,11 +2,26 @@ using WarehouseApp2.Models;
 
 public class UIStateContainer
 {
-    private RuleManager RuleManager;
-    public List<PickLocation> MyPickLocations;
-    public List<Sku> Skus;
-
     public event Action OnStateChange = null!;
+
+    public List<PickLocation> PickLocations = new();
+    public List<Sku> Skus = new();
+    public List<Assignment> Assignments = new();
+
+    public UIStateContainer() {
+        Console.WriteLine("UIStateContainer being instantiated...");
+        
+        BuildLocations();
+        BuildSkus();
+    }
+
+    public void SetValue(PickLocation p1)
+    {
+        // Set value in list
+        int i = PickLocations.FindIndex(p2 => p2.Id == p1.Id);
+        PickLocations[i] = p1;
+        NotifyStateChanged();
+    }
 
     private void BuildLocations() {
 
@@ -18,8 +33,7 @@ public class UIStateContainer
         builder.PutawayType = Attributes.CartonFlow;
 
         builder.CreateRange(1, 1, 1, 10, 4, 20);
-
-        MyPickLocations = builder.MyPickLocations;
+        PickLocations = builder.MyPickLocations;
     }
 
     private void BuildSkus() {
@@ -138,24 +152,6 @@ public class UIStateContainer
 
         Skus = builder.Skus;
 
-    }
-
-    public UIStateContainer() {
-        Console.WriteLine("UIStateContainer being instantiated...");
-
-        RuleManager = new RuleManager();
-
-        BuildLocations();
-        BuildSkus();
-
-        RuleManager.AssignSku(Skus[0], MyPickLocations);
-    }
-
-    public void SetValue(PickLocation p)
-    {
-        var i = MyPickLocations.FindIndex(l => l.Id == p.Id);
-        MyPickLocations[i] = p; 
-        NotifyStateChanged();
     }
 
     private void NotifyStateChanged() => OnStateChange?.Invoke();

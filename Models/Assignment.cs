@@ -6,6 +6,8 @@ public class Assignment
     public uint OverrideMin { get; set; }
     public uint OverrideMax { get; set; }
 
+    public bool? Confirmed { get; set; } = false;
+
     public Sku Sku { get; set; } = null!;
 
     public PickLocation PickLocation { get; set; } = null!;

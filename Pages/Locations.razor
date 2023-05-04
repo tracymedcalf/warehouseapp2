@@ -66,6 +66,6 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        MyLocations = myStateContainer.MyPickLocations;
+        MyLocations = myStateContainer.PickLocations.ToList();
     }
 }

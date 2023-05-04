@@ -29,6 +29,6 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        Location = myStateContainer.MyPickLocations.Find(p => p.Id == Id);
+        Location = myStateContainer.PickLocations.Find(p => p.Id == Id);
     }
 }
