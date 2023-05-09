@@ -1,0 +1,61 @@
+@using WarehouseApp2.Models;
+
+@page "/autoassign/assign"
+
+<MudTable 
+    Items="@MyAssignments"
+    Hover=true 
+    Bordered=true 
+    Striped=true 
+    Filter="new Func<Assignment,bool>(FilterFunc1)" 
+    @bind-SelectedItem="selectedItem1"
+>
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Assignments</MudText>
+        <MudSpacer />
+        <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Pick Location</MudTh>
+        <MudTh></MudTh>
+        <MudTh>SKU</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="sku">
+            <MudLink Href=@($"skus/{context.Id}")>@context.Sku.Name</MudLink>
+        </MudTd>
+        <MudTd DataLabel="Arrow">-</MudTd>
+        <MudTd DataLabel="location">
+            <MudLink Href=@($"locations/{context.Id}")>@context.PickLocation.Name</MudLink>
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+
+@code {
+    private string searchString1 = "";
+    private Assignment? selectedItem1;
+
+    private List<Assignment> MyAssignments = null!;
+
+    private bool FilterFunc1(Assignment element) => FilterFunc(element, searchString1);
+
+    private bool FilterFunc(Assignment element, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.Sku.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.PickLocation.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        return false;
+    }
+    
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        MyAssignments = new();
+    }
+}

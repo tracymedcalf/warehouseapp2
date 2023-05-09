@@ -1,0 +1,118 @@
+﻿@using WarehouseApp2.Models;
+
+@inject NavigationManager Navigate
+
+@inject UIStateContainer myStateContainer
+
+<MudCard Outlined="true">
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6">
+                Auto Assign
+            </MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent>
+        @if (selectedItems.Count() == 0 && clickedGo) {
+            <MudAlert Severity="Severity.Error">You must choose one or more SKUs to auto-assign.</MudAlert>
+        }
+        <MudText>
+            Selected items (@selectedItems?.Count): @(selectedItems == null ? "" : string.Join(", ", selectedItems.OrderBy(x => x.Name).Select(x => x.Name)))
+        </MudText>
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton 
+            Color="Color.Secondary"
+            OnClick="OnClickGo"
+            Typo="Typo.body2"
+            Variant="Variant.Filled" 
+            >
+            Go
+        </MudButton>
+    </MudCardActions>
+</MudCard>
+
+<MudTable 
+    @ref="_table" 
+    T="Sku" 
+    Items="@MySkus" 
+    MultiSelection="true" 
+    @bind-SelectedItems="selectedItems" 
+    OnRowClick="@OnRowClick" 
+    SelectOnRowClick="true"
+    Filter="new Func<Sku,bool>(FilterFunc1)"
+    Hover=true
+    Bordered=true
+    Striped=true
+    >
+    <ToolBarContent>
+        <MudSpacer />
+        <MudTextField 
+            @bind-Value="searchString1" 
+            Placeholder="Search" 
+            Adornment="Adornment.Start" 
+            AdornmentIcon="@Icons.Material.Filled.Search" 
+            IconSize="Size.Medium" 
+            Class="mt-0">
+        </MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>SKU</MudTh>
+        <MudTh>Has Location?</MudTh>
+        <MudTh>Description</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="sku">
+            <MudLink Href=@($"skus/{context.Id}")>@context.Name</MudLink>
+        </MudTd>
+        <MudTd DataLabel="Has Location?">@(context.Assignments.Count() == 0 ? "NO" : "YES")</MudTd>
+        <MudTd DataLabel="Description">@context.Description</MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+    </PagerContent>
+</MudTable>
+
+@code {
+    private bool clickedGo = false;
+
+    private string searchString1 = "";
+    private Sku? selectedItem1 = null;
+
+    private List<Sku> MySkus = null!;
+
+    private HashSet<Sku> selectedItems = new HashSet<Sku>();
+    private MudTable<Sku> _table;
+
+    void OnRowClick(TableRowClickEventArgs<Sku> args)
+    {
+        clickedGo = false;
+    }
+
+    private bool FilterFunc1(Sku element) => FilterFunc(element, searchString1);
+
+    private bool FilterFunc(Sku element, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.Assignments.Count() == 0)// && element.Assignment.Sku.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        return false;
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        MySkus = myStateContainer.Skus.ToList();
+    }
+
+    void OnClickGo() {
+        clickedGo = true;
+        if (selectedItems.Count() == 0)
+            return;
+        myStateContainer.SkusToAssign = selectedItems.ToList();
+        Navigate.NavigateTo("autoassign/assign");
+    }
+}

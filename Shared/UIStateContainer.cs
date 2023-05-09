@@ -4,9 +4,11 @@ public class UIStateContainer
 {
     public event Action OnStateChange = null!;
 
-    public List<PickLocation> PickLocations = new();
-    public List<Sku> Skus = new();
-    public List<Assignment> Assignments = new();
+    public List<PickLocation> PickLocations { get; set; } = new();
+    public List<Sku> Skus { get; set; } = new();
+    public List<Assignment> Assignments { get; set; } = new();
+
+    public List<Sku> SkusToAssign { get; set; } = new();
 
     public UIStateContainer() {
         Console.WriteLine("UIStateContainer being instantiated...");

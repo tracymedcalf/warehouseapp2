@@ -1,73 +1,14 @@
-﻿@using WarehouseApp2.Models;
+﻿@using WarehouseApp2.Components;
+@using WarehouseApp2.Models;
 
 @page "/skus"
 
-@inject UIStateContainer myStateContainer
-
 <PageTitle>SKUs</PageTitle>
-
 <MudText Typo="Typo.h3" GutterBottom="true">Skus</MudText>
-<MudTable Items="@MySkus" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<Sku,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem1">
-    <ToolBarContent>
-        <MudText Typo="Typo.h6">SKUs</MudText>
-        <MudSpacer />
-        <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-    </ToolBarContent>
-    <HeaderContent>
-        <MudTh>SKU</MudTh>
-        <MudTh>Has Location?</MudTh>
-        <MudTh>Description</MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="location">
-            <MudLink Href=@($"skus/{context.Id}")>@context.Name</MudLink>
-        </MudTd>
-        <MudTd DataLabel="Has Location?">@(context.Assignments.Count() == 0 ? "NO" : "YES")</MudTd>
-        <MudTd DataLabel="Description">@context.Description</MudTd>
-    </RowTemplate>
-    <PagerContent>
-        <MudTablePager />
-    </PagerContent>
-</MudTable>
 
-<div class="d-flex flex-wrap mt-4">
-    <MudSwitch @bind-Checked="@hover" Color="Color.Primary">Hover</MudSwitch>
-    <MudSwitch @bind-Checked="@dense" Color="Color.Secondary">Dense</MudSwitch>
-    <MudSwitch @bind-Checked="@striped" Color="Color.Tertiary">Striped</MudSwitch>
-    <MudSwitch @bind-Checked="@bordered" Color="Color.Warning">Bordered</MudSwitch>
-    <MudSpacer />
-    <div style="min-width:200px;">
-        <MudText Inline="true" Class="align-self-center">Selected1: @selectedItem1?.Name</MudText>
-    </div>
-</div>
+<SkusComponent />
 
 @code {
-    private bool dense = false;
-    private bool hover = true;
-    private bool striped = false;
-    private bool bordered = false;
-    private string searchString1 = "";
-    private Sku? selectedItem1 = null;
-    private HashSet<Sku> selectedItems = new HashSet<Sku>();
-
-    private List<Sku> MySkus = null!;
-
-    private bool FilterFunc1(Sku element) => FilterFunc(element, searchString1);
-
-    private bool FilterFunc(Sku element, string searchString)
-    {
-        if (string.IsNullOrWhiteSpace(searchString))
-            return true;
-        if (element.Assignments.Count() == 0)// && element.Assignment.Sku.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
-        if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
-        return false;
-    }
-
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        MySkus = myStateContainer.Skus.ToList();
+    void OnClickGo(HashSet<Sku> skus) {
     }
 }

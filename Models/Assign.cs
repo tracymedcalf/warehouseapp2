@@ -35,21 +35,21 @@ public static class Assign
       
         List<Assignment> ret = new List<Assignment>();
 
-        //foreach (var j in joins) 
-        //{
-        //    j.LocationGroup.Zip(
-        //            j.SkuGroup,
-        //            (s, l) => {
-        //                var a = new Assignment {
-        //                    PickLocation = l,
-        //                    Sku = s
-        //                };
-        //                l.Assignment = a;
-        //                s.Assignments.Add(a);
-        //                ret.Add(a);
-        //            });
+        foreach (var j in joins) 
+        {
+            //j.LocationGroup.Zip(
+            //        j.SkuGroup,
+            //        (l, s) => {
+            //            var a = new Assignment {
+            //                PickLocation = l,
+            //                Sku = s
+            //            };
+            //            l.Assignment = a;
+            //            s.Assignments.Add(a);
+            //            ret.Add(a);
+            //        });
 
-        //}
+        }
 
         return ret;
     }
