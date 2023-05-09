@@ -17,6 +17,10 @@ public class UIStateContainer
         BuildSkus();
     }
 
+    public AutoAssign Assign() {
+        return AutoAssign.AssignSkus(Skus, PickLocations);
+    }
+
     public void SetValue(PickLocation p1)
     {
         // Set value in list

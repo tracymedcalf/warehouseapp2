@@ -2,6 +2,8 @@
 
 @page "/autoassign/assign"
 
+@inject UIStateContainer myStateContainer
+
 <MudTable 
     Items="@MyAssignments"
     Hover=true 
@@ -56,6 +58,7 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        MyAssignments = new();
+        var a = myStateContainer.Assign();
+        MyAssignments = a.Assignments;
     }
 }
