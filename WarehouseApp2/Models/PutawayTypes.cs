@@ -7,7 +7,7 @@ public static class PutawayTypes
     public static string BinShelf = "Bin Shelf";
     public static string Bulk = "Bulk";
     public static string CartonFlow = "Carton Flow";
-    public static string DoorsAndPanells = "Doors and Panels";
+    public static string DoorsAndPanels = "Doors and Panels";
     public static string SelectRackEpjPick = "Select Rack EPJ Pick";
     public static string SelectRackPalletPick = "Select Rack Pallet Pick";
     public static string SelectRackOblong = "Select Rack Oblong";

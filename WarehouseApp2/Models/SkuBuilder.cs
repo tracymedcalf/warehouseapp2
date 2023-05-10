@@ -9,6 +9,7 @@ public class SkuBuilder
     public string CutCode { get; set; } = Attributes.None;
     public bool Liquid { get; set; } = false;
     public string MaxType { get; set; } = MaxTypes.Volume;
+    public string PutawayType { get; set; } = PutawayType.Bin;
     public uint Ti { get; set; } = 4;
     public uint Hi { get; set; } = 4;
 
