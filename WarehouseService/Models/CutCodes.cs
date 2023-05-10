@@ -1,4 +1,4 @@
-namespace WarehouseApp2.Models;
+namespace WarehouseService.Models;
 
 public static class CutCodes
 {

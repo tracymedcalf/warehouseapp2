@@ -1,4 +1,4 @@
-using WarehouseApp2.Models;
+namespace WarehouseService.Models;
 
 public class UIStateContainer
 {

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using WarehouseApp2.Data;
 using MudBlazor.Services;
+using WarehouseService.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 

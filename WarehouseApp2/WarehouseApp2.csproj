@@ -13,4 +13,8 @@
     <PackageReference Include="RulesEngine" Version="4.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WarehouseService\WarehouseService.csproj" />
+  </ItemGroup>
+
 </Project>
