@@ -2,13 +2,11 @@ namespace WarehouseService.Models;
 
 public class UIStateContainer
 {
-    public event Action OnStateChange = null!;
-
+    public List<Assignment> Assignments { get; set; } = new();
     public List<PickLocation> PickLocations { get; set; } = new();
     public List<Sku> Skus { get; set; } = new();
-    public List<Assignment> Assignments { get; set; } = new();
-
-    public List<Sku> SkusToAssign { get; set; } = new();
+    public List<Assignment>  { get; set; } = new();
+    public event Action OnStateChange = null!;
 
     public UIStateContainer() {
         Console.WriteLine("UIStateContainer being instantiated...");
@@ -17,8 +15,13 @@ public class UIStateContainer
         BuildSkus();
     }
 
-    public AutoAssign Assign() {
-        return AutoAssign.AssignSkus(Skus, PickLocations);
+    public int Assign() {
+        Assignments.AddRange(SuggestedAssignments);
+        return assignments.Count();
+    }
+
+    public AutoAssign SuggestAssignments(List<Assignment> skusToAssign) {
+        return AssignSkus(skusToAssign, PickLocations);
     }
 
     public void SetValue(PickLocation p1)
@@ -40,6 +43,11 @@ public class UIStateContainer
 
         builder.CreateRange(1, 1, 1, 10, 4, 20);
         PickLocations = builder.MyPickLocations;
+
+        // Assign canary
+        var canary = PickLocations.Find(p => p.Id == 1);
+        var assignments = SuggestAssignments();
+        Assign();
     }
 
     private void BuildSkus() {

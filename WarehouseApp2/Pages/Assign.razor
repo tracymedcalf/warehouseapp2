@@ -4,31 +4,62 @@
 
 @inject UIStateContainer myStateContainer
 
+<MudButton
+    Color="Color.Error"
+    Disabled="!selectedItems.Any()"
+    OnClick="DeleteSelectedAssignments"
+    StartIcon="@Icons.Material.Filled.Delete"
+    Variant="Variant.Filled"
+    >
+    Remove Assignments
+</MudButton>
+
+<MudButton
+    Color="Color.Primary"
+    Href="/autoassign/confirm"
+    Variant="Variant.Filled"
+>
+    Confirm All
+</MudButton>
+
 <MudTable 
+    @bind-SelectedItems="selectedItems" 
+    @ref="_table" 
+    Bordered="true"
+    Filter="new Func<Assignment,bool>(FilterFunc1)"
+    Hover=true
     Items="@MyAssignments"
-    Hover=true 
-    Bordered=true 
-    Striped=true 
-    Filter="new Func<Assignment,bool>(FilterFunc1)" 
-    @bind-SelectedItem="selectedItem1"
+    MultiSelection="true" 
+    SelectOnRowClick="true"
+    Striped="true"
+    T="Assignment" 
 >
     <ToolBarContent>
         <MudText Typo="Typo.h6">Assignments</MudText>
         <MudSpacer />
-        <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        <MudTextField
+            @bind-Value="searchString1"
+            Placeholder="Search"
+            Adornment="Adornment.Start"
+            AdornmentIcon="@Icons.Material.Filled.Search"
+            IconSize="Size.Medium"
+            Class="mt-0">
+        </MudTextField>
     </ToolBarContent>
     <HeaderContent>
-        <MudTh>Pick Location</MudTh>
-        <MudTh></MudTh>
         <MudTh>SKU</MudTh>
+        <MudTh>SKU Description</MudTh>
+        <MudTh>Assigned Pick Location</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="sku">
-            <MudLink Href=@($"skus/{context.Id}")>@context.Sku.Name</MudLink>
+            <MudLink Href=@($"skus/{context.Sku.Id}")>@context.Sku.Name</MudLink>
         </MudTd>
-        <MudTd DataLabel="Arrow">-</MudTd>
+        <MudTd DataLabel="skuDescription">
+            @context.Sku.Description
+        </MudTd>
         <MudTd DataLabel="location">
-            <MudLink Href=@($"locations/{context.Id}")>@context.PickLocation.Name</MudLink>
+            <MudLink Href=@($"locations/{context.PickLocation.Id}")>@context.PickLocation.Name</MudLink>
         </MudTd>
     </RowTemplate>
     <PagerContent>
@@ -37,10 +68,10 @@
 </MudTable>
 
 @code {
-    private string searchString1 = "";
-    private Assignment? selectedItem1;
-
+    private HashSet<Assignment> selectedItems = new HashSet<Assignment>();
     private List<Assignment> MyAssignments = null!;
+    private MudTable<Assignment> _table;
+    private string searchString1 = "";
 
     private bool FilterFunc1(Assignment element) => FilterFunc(element, searchString1);
 
@@ -58,7 +89,17 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        var a = myStateContainer.Assign();
+        var a = myStateContainer.SuggestAssignments();
         MyAssignments = a.Assignments;
+    }
+
+    // Remove the selected items from the list
+    private void DeleteSelectedAssignments()
+    {
+        foreach (var item in selectedItems)
+        {
+            MyAssignments.Remove(item);
+        }
+        selectedItems.Clear();
     }
 }

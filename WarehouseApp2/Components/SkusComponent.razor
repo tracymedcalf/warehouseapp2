@@ -1,8 +1,8 @@
-﻿@using WarehouseService.Models;
+﻿@using WarehouseService.Models
 
 @inject NavigationManager Navigate
 
-@inject UIStateContainer myStateContainer
+@inject UIStateContainer stateContainer
 
 <MudCard Outlined="true">
     <MudCardHeader>
@@ -13,37 +13,37 @@
         </CardHeaderContent>
     </MudCardHeader>
     <MudCardContent>
-        @if (selectedItems.Count() == 0 && clickedGo) {
-            <MudAlert Severity="Severity.Error">You must choose one or more SKUs to auto-assign.</MudAlert>
-        }
         <MudText>
             Selected items (@selectedItems?.Count): @(selectedItems == null ? "" : string.Join(", ", selectedItems.OrderBy(x => x.Name).Select(x => x.Name)))
         </MudText>
     </MudCardContent>
     <MudCardActions>
-        <MudButton 
-            Color="Color.Secondary"
-            OnClick="OnClickGo"
-            Typo="Typo.body2"
-            Variant="Variant.Filled" 
+        <MudTooltip 
+            Text="@(selectedItems.Any() ? "Auto assign selected items" : "Select items to auto assign")" 
             >
-            Go
-        </MudButton>
+            <MudButton 
+                Color="Color.Secondary"
+                Disabled="!selectedItems.Any()"
+                OnClick="OnClickGo"
+                Variant="Variant.Filled"
+                >
+                Go
+            </MudButton>
+        </MudTooltip>
     </MudCardActions>
 </MudCard>
 
 <MudTable 
-    @ref="_table" 
-    T="Sku" 
-    Items="@MySkus" 
-    MultiSelection="true" 
     @bind-SelectedItems="selectedItems" 
-    OnRowClick="@OnRowClick" 
-    SelectOnRowClick="true"
+    @ref="_table" 
+    Bordered=true
     Filter="new Func<Sku,bool>(FilterFunc1)"
     Hover=true
-    Bordered=true
+    Items="@MySkus" 
+    MultiSelection="true" 
+    SelectOnRowClick="true"
     Striped=true
+    T="Sku" 
     >
     <ToolBarContent>
         <MudSpacer />
@@ -74,20 +74,11 @@
 </MudTable>
 
 @code {
-    private bool clickedGo = false;
-
-    private string searchString1 = "";
-    private Sku? selectedItem1 = null;
-
-    private List<Sku> MySkus = null!;
-
     private HashSet<Sku> selectedItems = new HashSet<Sku>();
+    private List<Sku> MySkus = null!;
     private MudTable<Sku> _table;
-
-    void OnRowClick(TableRowClickEventArgs<Sku> args)
-    {
-        clickedGo = false;
-    }
+    private Sku? selectedItem1 = null;
+    private string searchString1 = "";
 
     private bool FilterFunc1(Sku element) => FilterFunc(element, searchString1);
 
@@ -105,14 +96,13 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        MySkus = myStateContainer.Skus.ToList();
+        MySkus = stateContainer.Skus.ToList();
     }
 
     void OnClickGo() {
-        clickedGo = true;
         if (selectedItems.Count() == 0)
             return;
-        myStateContainer.SkusToAssign = selectedItems.ToList();
+        stateContainer.SkusToAssign = selectedItems.ToList();
         Navigate.NavigateTo("autoassign/assign");
     }
 }

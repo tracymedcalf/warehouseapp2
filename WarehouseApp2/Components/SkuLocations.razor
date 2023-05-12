@@ -1,0 +1,43 @@
+@using WarehouseService.Models;
+
+<MudCard>
+    <MudCardHeader>
+        <MudText Typo="Typo.h6">Pick Locations</MudText>
+    </MudCardHeader>
+    <MudCardContent>
+        @if (Assignments.Count() == 0) {
+            <MudText>This SKU is not assigned to any pick locations.</MudText>
+        } else {
+            <MudTable 
+                Items="@Assignments" 
+                Hover="true" 
+                Bordered="true" 
+                Dense="true"
+                Striped="true" 
+                >
+                <HeaderContent>
+                    <MudTh>Name</MudTh>
+                    <MudTh>Putaway Type</MudTh>
+                    <MudTh>Min</MudTh>
+                    <MudTh>Max</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="location">
+                        <MudLink Href=@($"locations/{context.Id}")>@context.PickLocation.Name</MudLink>
+                    </MudTd>
+                    <MudTd DataLabel="Putaway Type">@context.PickLocation.PutawayType</MudTd>
+                    <MudTd DataLabel="Putaway Type">@context.Min()</MudTd>
+                    <MudTd DataLabel="Putaway Type">@context.Max()</MudTd>
+                </RowTemplate>
+                <PagerContent>
+                    <MudTablePager />
+                </PagerContent>
+            </MudTable>
+        }
+    </MudCardContent>
+</MudCard>
+
+@code {
+    [Parameter]
+    public List<Assignment> Assignments { get; set; }
+}

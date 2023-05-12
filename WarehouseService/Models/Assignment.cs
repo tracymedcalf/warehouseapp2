@@ -2,43 +2,40 @@ namespace WarehouseService.Models;
 
 public class Assignment
 {
-    public long Id { get; set; }
-    public uint OverrideMin { get; set; }
-    public uint OverrideMax { get; set; }
-
-    public bool? Confirmed { get; set; } = false;
-
-    public Sku Sku { get; set; } = null!;
-
     public PickLocation PickLocation { get; set; } = null!;
+    public Sku Sku { get; set; } = null!;
+    public bool? Confirmed { get; set; } = false;
+    public long Id { get; set; }
+    public uint? OverrideMax { get; set; }
+    public uint? OverrideMin { get; set; }
 
-    private uint SrOblong(PickLocation location, Sku sku) {
+    private uint SrOblong() {
         return 1000;
     }
 
-    public uint Max(PickLocation location, Sku sku) {
+    public uint Max() {
         if (OverrideMax is uint max) {
             return max;
         }
 
-        // If the location is Pallet Flow, then assign
+        // If the PickLocation is Pallet Flow, then assign
         // max according to TI/HI
-        // If the sku is in carton flow, the MaxType will be used
-        // If the sku is in a bin, the MaxType will be used
+        // If the Sku is in carton flow, the MaxType will be used
+        // If the Sku is in a bin, the MaxType will be used
         uint maxPallets = 2;
-        switch (location.PutawayType) {
+        switch (PickLocation.PutawayType) {
             case "Pallet Flow":
-                if (sku.Ti is uint ti && sku.Hi is uint hi) {
+                if (Sku.Ti is uint ti && Sku.Hi is uint hi) {
                     return maxPallets * ti * hi;
                 } else {
                     return 0;
                 }
                 // SR = Select Rack
             case "SR Oblong":
-                return SrOblong(location, sku);
+                return SrOblong();
         }
 
-        return sku.MaxType switch {
+        return Sku.MaxType switch {
             "Box" => 1,
                 "Liquid" => 2,
                 "Volume" => 3,
@@ -47,10 +44,13 @@ public class Assignment
         };
     }
 
-    public uint Min(Location location, Sku sku) {
+    public uint Min() {
         if (OverrideMin is uint min) {
             return min;
         }
-        return 1;
+
+        int ceil = (int)Math.Ceiling(Sku.UnitsPerDay);
+        uint units = ceil >= 0 ? (uint)ceil : 0;
+        return units * 2;
     }
 }

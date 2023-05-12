@@ -31,6 +31,7 @@ public class SkuBuilder
                 Description = description,
                 CutCode = CutCode,
                 MaxType = MaxType,
+                PutawayType = PutawayType,
                 Width = width,
                 Length = length,
                 Height = height,
