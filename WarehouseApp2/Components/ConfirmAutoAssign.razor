@@ -1,0 +1,22 @@
+@using WarehouseService.Models
+
+
+@inject UIStateContainer stateContainer
+
+<PageTitle>Confirm Auto Assign</PageTitle>
+<MudText Typo="Typo.h3" GutterBottom="true">Confirm Auto Assign</MudText>
+
+<MudAlert Severity="Severity.Success">@(Count) SKUs successfully assigned!</MudAlert>
+
+@code {
+    [Parameter]
+    public List<Assignment> Assignments { get; set; }
+
+    private int Count;
+
+    protected override void OnInitialized() 
+    {
+        base.OnInitialized();
+        Count = stateContainer.Assign(Assignments);
+    }
+}

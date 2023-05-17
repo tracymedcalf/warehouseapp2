@@ -4,6 +4,10 @@
 
 @inject UIStateContainer stateContainer
 
+<PageTitle>SKUs</PageTitle>
+<MudText Typo="Typo.h3" GutterBottom="true">Skus</MudText>
+
+
 <MudCard Outlined="true">
     <MudCardHeader>
         <CardHeaderContent>
@@ -14,17 +18,17 @@
     </MudCardHeader>
     <MudCardContent>
         <MudText>
-            Selected items (@selectedItems?.Count): @(selectedItems == null ? "" : string.Join(", ", selectedItems.OrderBy(x => x.Name).Select(x => x.Name)))
+            Selected items (@SkusToAssign?.Count): @(SkusToAssign == null ? "" : string.Join(", ", SkusToAssign.OrderBy(x => x.Name).Select(x => x.Name)))
         </MudText>
     </MudCardContent>
     <MudCardActions>
         <MudTooltip 
-            Text="@(selectedItems.Any() ? "Auto assign selected items" : "Select items to auto assign")" 
+            Text="@(SkusToAssign.Any() ? "Auto assign selected items" : "Select items to auto assign")" 
             >
             <MudButton 
                 Color="Color.Secondary"
-                Disabled="!selectedItems.Any()"
-                OnClick="OnClickGo"
+                Disabled="!SkusToAssign.Any()"
+                Href="skus/assign"
                 Variant="Variant.Filled"
                 >
                 Go
@@ -34,7 +38,7 @@
 </MudCard>
 
 <MudTable 
-    @bind-SelectedItems="selectedItems" 
+    @bind-SelectedItems="SkusToAssign" 
     @ref="_table" 
     Bordered=true
     Filter="new Func<Sku,bool>(FilterFunc1)"
@@ -74,10 +78,12 @@
 </MudTable>
 
 @code {
-    private HashSet<Sku> selectedItems = new HashSet<Sku>();
+    [Parameter]
+    public HashSet<Sku> SkusToAssign { get; set; }
+
+    //private HashSet<Sku> SkusToAssign = new HashSet<Sku>();
     private List<Sku> MySkus = null!;
     private MudTable<Sku> _table;
-    private Sku? selectedItem1 = null;
     private string searchString1 = "";
 
     private bool FilterFunc1(Sku element) => FilterFunc(element, searchString1);
@@ -97,12 +103,5 @@
     {
         base.OnInitialized();
         MySkus = stateContainer.Skus.ToList();
-    }
-
-    void OnClickGo() {
-        if (selectedItems.Count() == 0)
-            return;
-        stateContainer.SkusToAssign = selectedItems.ToList();
-        Navigate.NavigateTo("autoassign/assign");
     }
 }

@@ -6,14 +6,13 @@ public class SkuBuilder
 {
     private int Count = 0;
 
-    public string CutCode { get; set; } = Attributes.None;
+    public List<Sku> Skus = new();
     public bool Liquid { get; set; } = false;
+    public string CutCode { get; set; } = Attributes.None;
     public string MaxType { get; set; } = MaxTypes.Volume;
     public string PutawayType { get; set; } = PutawayTypes.Bin;
-    public uint Ti { get; set; } = 4;
     public uint Hi { get; set; } = 4;
-
-    public List<Sku> Skus = new();
+    public uint Ti { get; set; } = 4;
 
     public SkuBuilder Create(
             string description,
@@ -27,17 +26,18 @@ public class SkuBuilder
 
         Skus.Add(new Sku
                 {
-                Name = $"1007{Count.ToString().PadLeft(6,'0')}",
-                Description = description,
                 CutCode = CutCode,
-                MaxType = MaxType,
-                PutawayType = PutawayType,
-                Width = width,
-                Length = length,
+                Description = description,
                 Height = height,
-                Weight = weight,
-                Ti = Ti,
                 Hi = Hi,
+                Id = Count,
+                Length = length,
+                MaxType = MaxType,
+                Name = $"1007{Count.ToString().PadLeft(6,'0')}",
+                PutawayType = PutawayType,
+                Ti = Ti,
+                Weight = weight,
+                Width = width,
                 });
 
         return this;

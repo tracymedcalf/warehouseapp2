@@ -5,7 +5,6 @@ public class UIStateContainer
     public List<Assignment> Assignments { get; set; } = new();
     public List<PickLocation> PickLocations { get; set; } = new();
     public List<Sku> Skus { get; set; } = new();
-    public List<Assignment>  { get; set; } = new();
     public event Action OnStateChange = null!;
 
     public UIStateContainer() {
@@ -13,15 +12,22 @@ public class UIStateContainer
         
         BuildLocations();
         BuildSkus();
+
+        // Assign canary
+        var canary = Skus.Find(s => s.Id == 1) ?? throw new Exception("SKU with Id = 1 not initialized");
+        AutoAssign a = SuggestAssignments(
+                new List<Sku> { canary }
+                );
+        Assign(a.Assignments);
     }
 
-    public int Assign() {
-        Assignments.AddRange(SuggestedAssignments);
+    public int Assign(List<Assignment> assignments) {
+        Assignments.AddRange(assignments);
         return assignments.Count();
     }
 
-    public AutoAssign SuggestAssignments(List<Assignment> skusToAssign) {
-        return AssignSkus(skusToAssign, PickLocations);
+    public AutoAssign SuggestAssignments(List<Sku> skusToAssign) {
+        return AutoAssign.AssignSkus(skusToAssign, PickLocations);
     }
 
     public void SetValue(PickLocation p1)
@@ -44,10 +50,6 @@ public class UIStateContainer
         builder.CreateRange(1, 1, 1, 10, 4, 20);
         PickLocations = builder.MyPickLocations;
 
-        // Assign canary
-        var canary = PickLocations.Find(p => p.Id == 1);
-        var assignments = SuggestAssignments();
-        Assign();
     }
 
     private void BuildSkus() {

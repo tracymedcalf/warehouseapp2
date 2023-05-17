@@ -62,8 +62,10 @@ public class AutoAssign
                     PickLocation = l,
                     Sku = s
                 };
+
                 l.Assignment = a;
                 s.Assignments.Add(a);
+
                 assignments.Add(a);
             }
 

@@ -1,8 +1,9 @@
 @using WarehouseService.Models;
 
-@page "/autoassign/assign"
+@inject UIStateContainer stateContainer
 
-@inject UIStateContainer myStateContainer
+<PageTitle>Auto Assign</PageTitle>
+<MudText Typo="Typo.h3" GutterBottom="true">Auto Assign</MudText>
 
 <MudButton
     Color="Color.Error"
@@ -16,7 +17,7 @@
 
 <MudButton
     Color="Color.Primary"
-    Href="/autoassign/confirm"
+    Href="/skus/confirm"
     Variant="Variant.Filled"
 >
     Confirm All
@@ -28,7 +29,7 @@
     Bordered="true"
     Filter="new Func<Assignment,bool>(FilterFunc1)"
     Hover=true
-    Items="@MyAssignments"
+    Items="@Assignments"
     MultiSelection="true" 
     SelectOnRowClick="true"
     Striped="true"
@@ -68,8 +69,13 @@
 </MudTable>
 
 @code {
+    [Parameter]
+    public List<Assignment> Assignments { get; set; }
+    [Parameter]
+    public HashSet<Sku> SkusToAssign { get; set; }
+
+    private AutoAssign? MyAutoAssign;
     private HashSet<Assignment> selectedItems = new HashSet<Assignment>();
-    private List<Assignment> MyAssignments = null!;
     private MudTable<Assignment> _table;
     private string searchString1 = "";
 
@@ -89,8 +95,8 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        var a = myStateContainer.SuggestAssignments();
-        MyAssignments = a.Assignments;
+        AutoAssign MyAutoAssign = stateContainer.SuggestAssignments(SkusToAssign.ToList());
+        Assignments.AddRange(MyAutoAssign.Assignments);
     }
 
     // Remove the selected items from the list
@@ -98,7 +104,7 @@
     {
         foreach (var item in selectedItems)
         {
-            MyAssignments.Remove(item);
+            Assignments.Remove(item);
         }
         selectedItems.Clear();
     }

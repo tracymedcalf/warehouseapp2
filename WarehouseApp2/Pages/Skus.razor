@@ -1,14 +1,31 @@
-﻿@using WarehouseApp2.Components;
-@using WarehouseService.Models;
+﻿@using WarehouseApp2.Components
+@using WarehouseService.Models
 
-@page "/skus"
+@page "/skus/{Stage?}"
 
-<PageTitle>SKUs</PageTitle>
-<MudText Typo="Typo.h3" GutterBottom="true">Skus</MudText>
-
-<SkusComponent />
+@switch (Stage?.ToLower()) {
+    case "assign":
+        <Assign 
+            Assignments="@Assignments"
+            SkusToAssign="@SkusToAssign" 
+            />
+        break;
+    case "confirm":
+        <ConfirmAutoAssign 
+            Assignments="@Assignments"
+            />
+        break;
+    default:
+        <SkusComponent
+            SkusToAssign="@SkusToAssign"
+            />
+        break;
+}
 
 @code {
-    void OnClickGo(HashSet<Sku> skus) {
-    }
+    [Parameter]
+    public string? Stage { get; set; }
+    
+    private HashSet<Sku> SkusToAssign { get; set; } = new();
+    private List<Assignment> Assignments { get; set; } = new();
 }
